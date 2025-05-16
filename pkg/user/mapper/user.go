@@ -1,15 +1,13 @@
 package mapper
 
 import (
-	"fmt"
-
 	"github.com/jaayroots/todo-api/entities"
+	_authUtils "github.com/jaayroots/todo-api/pkg/auth/utils"
 	_userModel "github.com/jaayroots/todo-api/pkg/user/model"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func ToUserEntity(userReq *_userModel.UserReq) (*entities.User, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userReq.Password), bcrypt.DefaultCost)
+	hashedPassword, err := _authUtils.HashPassword(userReq.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +37,8 @@ func ToUserUpdateEntity(userReq *_userModel.UserUpdateReq) (*entities.User, erro
 
 func ToUserRes(user *entities.User) *_userModel.UserRes {
 
-	fmt.Println(user.Email)
 	return &_userModel.UserRes{
+		ID:        user.ID,
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,

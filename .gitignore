@@ -27,6 +27,7 @@ go.work
 /.idea
 /app
 config.yaml
+/config/config.yaml
 /tmp
 /.air.toml
 

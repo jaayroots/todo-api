@@ -4,10 +4,6 @@ import "errors"
 
 type UserException struct{}
 
-func (e *UserException) Error() string {
-	return "Cannot create user"
-}
-
 func IsExistUser() error {
 	return errors.New("User is already")
 }

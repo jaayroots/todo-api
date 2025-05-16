@@ -13,3 +13,6 @@ database:
   dbname: todo-api-db
   sslmode: disable
   schema: public
+
+secretkey:
+  jwtsecret: cVU(xdc%xnZ6B2#Euutn3+Lg7PY#rFv^g(f(VdGh!YNe&WzpRfmhxmY6#Cg%

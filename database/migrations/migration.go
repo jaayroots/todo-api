@@ -14,6 +14,7 @@ func main() {
 	tx := db.Connect().Begin()
 
 	userMigration(tx)
+	sessionMigration(tx)
 
 	tx.Commit()
 	if tx.Error != nil {
@@ -24,4 +25,8 @@ func main() {
 
 func userMigration(tx *gorm.DB) {
 	tx.Migrator().CreateTable(&entities.User{})
+}
+
+func sessionMigration(tx *gorm.DB) {
+	tx.Migrator().CreateTable(&entities.Session{})
 }

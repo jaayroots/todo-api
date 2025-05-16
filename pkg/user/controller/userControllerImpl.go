@@ -18,25 +18,9 @@ type userContollerImpl struct {
 func NewUserControllerImpl(
 	userService _userService.UserService,
 ) UserContoller {
-	return &userContollerImpl{userService}
-}
-
-func (c *userContollerImpl) Create(pctx echo.Context) error {
-
-	createReq := new(_userModel.UserReq)
-
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
-	if err := customerEchoRequest.Bild(createReq); err != nil {
-		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
+	return &userContollerImpl{
+		userService,
 	}
-
-	user, err := c.userService.Create(createReq)
-	if err != nil {
-		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
-	}
-
-	return custom.Response(pctx, http.StatusOK, user, "", nil)
-
 }
 
 func (c *userContollerImpl) GetByUserID(pctx echo.Context) error {

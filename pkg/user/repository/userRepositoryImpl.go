@@ -34,12 +34,12 @@ func (r *userRepositoryImpl) Create(user *entities.User) (*entities.User, error)
 	return user, nil
 }
 
-func (r *userRepositoryImpl) CheckDuplicateEmail(user *entities.User) (*entities.User, error) {
+func (r *userRepositoryImpl) FindByEmail(email string) (*entities.User, error) {
 
 	userEntity := new(entities.User)
 
 	err := r.db.Connect().
-		Where("email = ? and is_deleted = ?", user.Email, false).
+		Where("email = ? and is_deleted = ?", email, false).
 		First(userEntity).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {

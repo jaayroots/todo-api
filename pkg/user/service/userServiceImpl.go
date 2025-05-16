@@ -4,7 +4,7 @@ import (
 	_userException "github.com/jaayroots/todo-api/pkg/user/exception"
 	_userModel "github.com/jaayroots/todo-api/pkg/user/model"
 	_userRepository "github.com/jaayroots/todo-api/pkg/user/repository"
-	_userMapper "github.com/jaayroots/todo-api/pkg/user/utils"
+	_userMapper "github.com/jaayroots/todo-api/pkg/user/mapper"
 )
 
 type userServiceImpl struct {
@@ -15,29 +15,6 @@ func NewUserServiceImpl(
 	userRepository _userRepository.UserRepository,
 ) UserService {
 	return &userServiceImpl{userRepository}
-}
-
-func (s *userServiceImpl) Create(userReq *_userModel.UserReq) (*_userModel.UserRes, error) {
-	userEntity, err := _userMapper.ToUserEntity(userReq)
-	if err != nil {
-		return nil, err
-	}
-
-	existingUser, err := s.userRepository.CheckDuplicateEmail(userEntity)
-	if err != nil {
-		return nil, err
-	}
-	if existingUser != nil {
-		return nil, _userException.IsExistUser()
-	}
-
-	createdUser, err := s.userRepository.Create(userEntity)
-	if err != nil {
-		return nil, err
-	}
-
-	userRes := _userMapper.ToUserRes(createdUser)
-	return userRes, nil
 }
 
 func (s *userServiceImpl) GetByUserID(userID uint64) (*_userModel.UserRes, error) {

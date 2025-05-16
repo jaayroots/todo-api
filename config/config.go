@@ -31,6 +31,10 @@ type (
 		Database *Database `mapstructure:"database" validate:"required"`
 		Server   *Server   `mapstructure:"server" validate:"required"`
 	}
+
+	SecretKey struct {
+		JwtSecret string `mapstructure:"jwtsecret" validate:"required"`
+	}
 )
 
 var (

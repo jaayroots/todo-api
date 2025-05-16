@@ -1,17 +1,22 @@
 package server
 
 import (
-	_userController "github.com/jaayroots/todo-api/pkg/user/controller"
+	_authController "github.com/jaayroots/todo-api/pkg/auth/controller"
+	_authService "github.com/jaayroots/todo-api/pkg/auth/service"
 	_userRepository "github.com/jaayroots/todo-api/pkg/user/repository"
-	_userService "github.com/jaayroots/todo-api/pkg/user/service"
+	_authRepository "github.com/jaayroots/todo-api/pkg/auth/repository"
 )
 
-func (s *echoServer) authRouter() {
+func (s *echoServer) authRouter(m *authorizingMiddleware) {
 	router := s.app.Group("/auth")
 
 	userRepository := _userRepository.NewUserRepositoryImpl(s.db, s.app.Logger)
-	userService := _userService.NewUserServiceImpl(userRepository)
-	userController := _userController.NewUserControllerImpl(userService)
+	sessionRepository := _authRepository.NewSessionRepositoryImpl(s.db, s.app.Logger)
 
-	router.POST("/register", userController.Create)
+	authService := _authService.NewAuthServiceImpl(userRepository, sessionRepository)
+	authController := _authController.NewUserControllerImpl(authService)
+
+	router.POST("/register", authController.Register)
+	router.POST("/login", authController.Login)
+	router.POST("/logout", authController.Logout, m.Authorizing)
 }

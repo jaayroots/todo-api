@@ -11,6 +11,6 @@ func (s *echoServer) healthRouter() {
 	router.GET("", s.healthCheck)
 }
 
-func (s *echoServer) healthCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "OK")
+func (s *echoServer) healthCheck(pctx echo.Context) error {
+	return pctx.String(http.StatusOK, "OK")
 }

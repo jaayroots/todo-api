@@ -7,17 +7,17 @@ import (
 )
 
 type ResponseFormat struct {
-	Status  string      `json:"status"`            // success หรือ unsuccess
-	Code    int         `json:"code"`              // HTTP status code
-	Message string      `json:"message,omitempty"` // ข้อความอธิบาย (optional)
-	Data    interface{} `json:"data,omitempty"`    // ข้อมูล response (optional)
-	Errors  string      `json:"errors,omitempty"`  // ข้อความ error (optional)
+	Success bool        `json:"success"`
+	Code    int         `json:"code"`
+	Message string      `json:"message,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
+	Errors  string      `json:"errors,omitempty"`
 }
 
 func Response(pctx echo.Context, httpStatus int, data interface{}, message string, err error) error {
-	statusCode := "success"
+	status := true
 	if httpStatus != http.StatusOK {
-		statusCode = "unsuccess"
+		status = false
 	}
 
 	var errMsg string
@@ -26,7 +26,7 @@ func Response(pctx echo.Context, httpStatus int, data interface{}, message strin
 	}
 
 	res := ResponseFormat{
-		Status:  statusCode,
+		Success: status,
 		Code:    httpStatus,
 		Message: message,
 		Data:    data,
