@@ -17,7 +17,7 @@ type authContollerImpl struct {
 	authService _authService.AuthService
 }
 
-func NewUserControllerImpl(
+func NewAuthControllerImpl(
 	authService _authService.AuthService,
 ) AuthContoller {
 	return &authContollerImpl{
@@ -30,7 +30,7 @@ func (c *authContollerImpl) Register(pctx echo.Context) error {
 	createReq := new(_userModel.UserReq)
 
 	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
-	if err := customerEchoRequest.Bild(createReq); err != nil {
+	if err := customerEchoRequest.Build(createReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
 
@@ -48,7 +48,7 @@ func (c *authContollerImpl) Login(pctx echo.Context) error {
 	loginReq := new(_authModel.LoginReq)
 
 	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
-	if err := customerEchoRequest.Bild(loginReq); err != nil {
+	if err := customerEchoRequest.Build(loginReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
 
@@ -82,6 +82,10 @@ func (c *authContollerImpl) Logout(pctx echo.Context) error {
 func (c *authContollerImpl) Authorizing(pctx echo.Context, next echo.HandlerFunc) error {
 
 	authHeader := pctx.Request().Header.Get("Authorization")
+	if authHeader == "" {
+		return custom.Response(pctx, http.StatusUnauthorized, nil, "", nil)
+	}
+
 	token := ""
 	if strings.HasPrefix(authHeader, "Bearer ") {
 		token = strings.TrimPrefix(authHeader, "Bearer ")

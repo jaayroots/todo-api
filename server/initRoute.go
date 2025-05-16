@@ -23,7 +23,7 @@ func (s *echoServer) getAuthorizingMiddleware() *authorizingMiddleware {
 	authRepository := _authRepository.NewSessionRepositoryImpl(s.db, s.app.Logger)
 
 	authService := _authService.NewAuthServiceImpl(userRepository, authRepository)
-	authController := _authController.NewUserControllerImpl(authService)
+	authController := _authController.NewAuthControllerImpl(authService)
 	return &authorizingMiddleware{
 		authController,
 	}

@@ -44,7 +44,7 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 	updateReq := new(_userModel.UserUpdateReq)
 
 	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
-	if err := customerEchoRequest.Bild(updateReq); err != nil {
+	if err := customerEchoRequest.Build(updateReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
 

@@ -8,7 +8,7 @@ import (
 
 type (
 	EchoRequest interface {
-		Bild(obj any) error
+		Build(obj any) error
 	}
 
 	customEchoRequest struct {
@@ -32,7 +32,7 @@ func NewCustomerEchoRequest(echoRequest echo.Context) EchoRequest {
 	}
 }
 
-func (r *customEchoRequest) Bild(obj any) error {
+func (r *customEchoRequest) Build(obj any) error {
 	if err := r.ctx.Bind(obj); err != nil {
 		return err
 	}

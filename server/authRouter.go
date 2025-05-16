@@ -14,7 +14,7 @@ func (s *echoServer) authRouter(m *authorizingMiddleware) {
 	sessionRepository := _authRepository.NewSessionRepositoryImpl(s.db, s.app.Logger)
 
 	authService := _authService.NewAuthServiceImpl(userRepository, sessionRepository)
-	authController := _authController.NewUserControllerImpl(authService)
+	authController := _authController.NewAuthControllerImpl(authService)
 
 	router.POST("/register", authController.Register)
 	router.POST("/login", authController.Login)

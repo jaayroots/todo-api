@@ -44,12 +44,12 @@ func (s *authServiceImpl) Register(userReq *_userModel.UserReq) (*_userModel.Use
 		return nil, _userException.IsExistUser()
 	}
 
-	createdUser, err := s.userRepository.Create(userEntity)
+	user, err = s.userRepository.Create(userEntity)
 	if err != nil {
 		return nil, err
 	}
 
-	userRes := _userMapper.ToUserRes(createdUser)
+	userRes := _userMapper.ToUserRes(user)
 
 	return userRes, nil
 }
