@@ -38,7 +38,7 @@ func ToUserUpdateEntity(userReq *_userModel.UserUpdateReq) (*entities.User, erro
 func ToUserRes(user *entities.User) *_userModel.UserRes {
 
 	return &_userModel.UserRes{
-		ID:        user.ID,
+		ID:        int(user.ID),
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,

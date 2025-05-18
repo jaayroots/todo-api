@@ -6,13 +6,14 @@ import (
 	_userService "github.com/jaayroots/todo-api/pkg/user/service"
 )
 
-func (s *echoServer) usersRouter() {
+func (s *echoServer) usersRouter(m *authorizingMiddleware) {
 	router := s.app.Group("/user")
+
 	userRepository := _userRepository.NewUserRepositoryImpl(s.db, s.app.Logger)
 	userService := _userService.NewUserServiceImpl(userRepository)
 	userController := _userController.NewUserControllerImpl(userService)
 
-	router.GET("/:userID", userController.GetByUserID)
-	router.PATCH("/:userID", userController.Update)
-	router.DELETE("/:userID", userController.Delete)
+	router.GET("/:userID", userController.GetByUserID, m.Authorizing)
+	router.PATCH("/:userID", userController.Update, m.Authorizing)
+	router.DELETE("/:userID", userController.Delete, m.Authorizing)
 }

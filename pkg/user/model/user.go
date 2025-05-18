@@ -6,7 +6,7 @@ import (
 
 type (
 	User struct {
-		ID        uint64    `json:"id"`
+		ID        int       `json:"id"`
 		Email     string    `json:"email"`
 		Password  string    `json:"password"`
 		FirstName string    `json:"firstName"`
@@ -31,7 +31,7 @@ type (
 	}
 
 	UserRes struct {
-		ID        uint64 `json:"id"`
+		ID        int    `json:"id"`
 		Email     string `json:"email"`
 		FirstName string `json:"first_name"`
 		LastName  string `json:"last_name"`

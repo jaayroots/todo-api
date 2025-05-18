@@ -54,7 +54,7 @@ func (r *userRepositoryImpl) FindByEmail(email string) (*entities.User, error) {
 
 }
 
-func (r *userRepositoryImpl) GetByUserID(userID uint64) (*entities.User, error) {
+func (r *userRepositoryImpl) GetByUserID(userID int) (*entities.User, error) {
 
 	user := new(entities.User)
 
@@ -73,7 +73,7 @@ func (r *userRepositoryImpl) GetByUserID(userID uint64) (*entities.User, error) 
 	return user, nil
 }
 
-func (r *userRepositoryImpl) Update(userID uint64, updateData *entities.User) (*entities.User, error) {
+func (r *userRepositoryImpl) Update(userID int, updateData *entities.User) (*entities.User, error) {
 
 	user := new(entities.User)
 
@@ -88,7 +88,7 @@ func (r *userRepositoryImpl) Update(userID uint64, updateData *entities.User) (*
 	return user, nil
 }
 
-func (r *userRepositoryImpl) Delete(userID uint64) error {
+func (r *userRepositoryImpl) Delete(userID int) error {
 
 	err := r.db.Connect().
 		Model(&entities.User{}).

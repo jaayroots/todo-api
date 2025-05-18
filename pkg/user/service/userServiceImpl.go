@@ -2,9 +2,9 @@ package service
 
 import (
 	_userException "github.com/jaayroots/todo-api/pkg/user/exception"
+	_userMapper "github.com/jaayroots/todo-api/pkg/user/mapper"
 	_userModel "github.com/jaayroots/todo-api/pkg/user/model"
 	_userRepository "github.com/jaayroots/todo-api/pkg/user/repository"
-	_userMapper "github.com/jaayroots/todo-api/pkg/user/mapper"
 )
 
 type userServiceImpl struct {
@@ -17,7 +17,7 @@ func NewUserServiceImpl(
 	return &userServiceImpl{userRepository}
 }
 
-func (s *userServiceImpl) GetByUserID(userID uint64) (*_userModel.UserRes, error) {
+func (s *userServiceImpl) GetByUserID(userID int) (*_userModel.UserRes, error) {
 
 	user, err := s.userRepository.GetByUserID(userID)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *userServiceImpl) GetByUserID(userID uint64) (*_userModel.UserRes, error
 	return userRes, nil
 }
 
-func (s *userServiceImpl) Update(userID uint64, userUpdateReq *_userModel.UserUpdateReq) error {
+func (s *userServiceImpl) Update(userID int, userUpdateReq *_userModel.UserUpdateReq) error {
 	userEntity, err := _userMapper.ToUserUpdateEntity(userUpdateReq)
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (s *userServiceImpl) Update(userID uint64, userUpdateReq *_userModel.UserUp
 	return nil
 }
 
-func (s *userServiceImpl) Delete(userID uint64) error {
+func (s *userServiceImpl) Delete(userID int) error {
 
 	user, err := s.userRepository.GetByUserID(userID)
 	if err != nil {

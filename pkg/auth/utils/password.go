@@ -24,7 +24,7 @@ func HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func HashToken(info interface{}, exp uint) (string, time.Time, error) {
+func HashToken(info interface{}, exp int) (string, time.Time, error) {
 
 	expDate := time.Now().Add(time.Hour * time.Duration(exp)) // exp in hours
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{

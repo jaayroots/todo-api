@@ -7,7 +7,7 @@ import (
 
 type AuthService interface {
 	Login(loginReq *_authModel.LoginReq) (*_authModel.LoginRes, error)
-	Logout(userID uint64) error
+	Logout(userID int) error
 	Register(userReq *_userModel.UserReq) (*_userModel.UserRes, error)
 	Authorizing(token string) (*_authModel.LoginRes, error)
 }

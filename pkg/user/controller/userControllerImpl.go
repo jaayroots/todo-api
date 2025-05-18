@@ -25,14 +25,14 @@ func NewUserControllerImpl(
 
 func (c *userContollerImpl) GetByUserID(pctx echo.Context) error {
 
-	userId, err := _utils.StrToUint64(pctx.Param("userID"))
+	userID, err := _utils.StrToint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	user, err := c.userService.GetByUserID(userId)
+	user, err := c.userService.GetByUserID(userID)
 	if err != nil {
-		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
+		return custom.Response(pctx, http.StatusNotFound, nil, "", err)
 	}
 
 	return custom.Response(pctx, http.StatusOK, user, "", nil)
@@ -48,12 +48,12 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
 
-	userId, err := _utils.StrToUint64(pctx.Param("userID"))
+	userID, err := _utils.StrToint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	err = c.userService.Update(userId, updateReq)
+	err = c.userService.Update(userID, updateReq)
 	if err != nil {
 		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
 	}
@@ -64,12 +64,12 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 
 func (c *userContollerImpl) Delete(pctx echo.Context) error {
 
-	userId, err := _utils.StrToUint64(pctx.Param("userID"))
+	userID, err := _utils.StrToint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	err = c.userService.Delete(userId)
+	err = c.userService.Delete(userID)
 	if err != nil {
 		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
 	}

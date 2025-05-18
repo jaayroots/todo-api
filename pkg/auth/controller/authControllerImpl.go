@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"context"
 	"net/http"
 	"strings"
 
@@ -99,7 +99,10 @@ func (c *authContollerImpl) Authorizing(pctx echo.Context, next echo.HandlerFunc
 	pctx.Set("token", loginRes.Token)
 	pctx.Set("user", loginRes.User)
 
-	fmt.Println(loginRes.User.ID)
+	ctx := context.WithValue(pctx.Request().Context(), "userID", loginRes.User.ID)
+	req := pctx.Request().WithContext(ctx)
+
+	pctx.SetRequest(req)
 
 	return next(pctx)
 }

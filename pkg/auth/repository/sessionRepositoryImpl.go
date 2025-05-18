@@ -34,7 +34,7 @@ func (r *sessionRepositoryImpl) Create(session *entities.Session) (*entities.Ses
 	return session, nil
 }
 
-func (r *sessionRepositoryImpl) Delete(userID uint64) error {
+func (r *sessionRepositoryImpl) Delete(userID int) error {
 
 	err := r.db.Connect().
 		Delete(&entities.Session{}, "user_id = ?", userID).Error

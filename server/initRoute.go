@@ -11,10 +11,10 @@ func (s *echoServer) initRoute() {
 
 	authorizingMiddleware := s.getAuthorizingMiddleware()
 
-	s.authRouter(authorizingMiddleware)
 	s.healthRouter()
-	s.todosRouter()
-	s.usersRouter()
+	s.authRouter(authorizingMiddleware)
+	s.usersRouter(authorizingMiddleware)
+	s.todosRouter(authorizingMiddleware)
 }
 
 func (s *echoServer) getAuthorizingMiddleware() *authorizingMiddleware {

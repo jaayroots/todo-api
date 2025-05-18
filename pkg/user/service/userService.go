@@ -5,7 +5,7 @@ import (
 )
 
 type UserService interface {
-	GetByUserID(userID uint64) (*_userModel.UserRes, error)
-	Update(userID uint64, userUpdateReq *_userModel.UserUpdateReq) error
-	Delete(userID uint64) error
+	GetByUserID(userID int) (*_userModel.UserRes, error)
+	Update(userID int, userUpdateReq *_userModel.UserUpdateReq) error
+	Delete(userID int) error
 }
