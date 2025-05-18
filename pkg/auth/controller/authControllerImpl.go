@@ -96,7 +96,6 @@ func (c *authContollerImpl) Authorizing(pctx echo.Context, next echo.HandlerFunc
 		return custom.Response(pctx, http.StatusUnauthorized, nil, "", err)
 	}
 
-	pctx.Set("token", loginRes.Token)
 	pctx.Set("user", loginRes.User)
 
 	ctx := context.WithValue(pctx.Request().Context(), "userID", loginRes.User.ID)
