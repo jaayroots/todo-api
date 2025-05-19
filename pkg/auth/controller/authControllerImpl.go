@@ -98,7 +98,7 @@ func (c *authContollerImpl) Authorizing(pctx echo.Context, next echo.HandlerFunc
 
 	pctx.Set("user", loginRes.User)
 
-	ctx := context.WithValue(pctx.Request().Context(), "userID", loginRes.User.ID)
+	ctx := context.WithValue(pctx.Request().Context(), "userID", uint(loginRes.User.ID))
 	req := pctx.Request().WithContext(ctx)
 
 	pctx.SetRequest(req)
