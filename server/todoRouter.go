@@ -13,6 +13,7 @@ func (s *echoServer) todosRouter(m *authorizingMiddleware) {
 	todoService := _todoService.NewTodoServiceImpl(todoRepository)
 	todoController := _todoController.NewTodoControllerImpl(todoService)
 
+	router.POST("/search", todoController.FindAll, m.Authorizing)
 	router.GET("/:todoID", todoController.Get, m.Authorizing)
 	router.POST("", todoController.Create, m.Authorizing)
 	router.PATCH("/:todoID", todoController.Update, m.Authorizing)

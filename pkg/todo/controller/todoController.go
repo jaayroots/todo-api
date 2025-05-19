@@ -9,4 +9,5 @@ type TodoContoller interface {
 	Create(pctx echo.Context) error
 	Update(pctx echo.Context) error
 	Delete(pctx echo.Context) error
+	FindAll(pctx echo.Context) error
 }

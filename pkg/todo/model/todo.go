@@ -25,4 +25,27 @@ type (
 		CreatedAt   int64  `json:"created_at"`
 		UpdatedAt   int64  `json:"updated_at"`
 	}
+
+	TodoSearchReq struct {
+		Page   int           `json:"page" validate:"required"`
+		Limit  int           `json:"limit" validate:"required"`
+		Filter TodoFilterReq `json:"filter" validate:"required"`
+	}
+
+	TodoFilterReq struct {
+		Title  *string `json:"title"`
+		Description  *string `json:"description"`
+		Status *int    `json:"status"`
+	}
+
+	TodoSearchRes struct {
+		Item     []*TodoRes     `json:"item"`
+		Paginate PaginateResult `json:"paginate"`
+	}
+
+	PaginateResult struct {
+		Page      int64 `json:"page"`
+		TotalPage int64 `json:"totalPage"`
+		Total     int64 `json:"total"`
+	}
 )

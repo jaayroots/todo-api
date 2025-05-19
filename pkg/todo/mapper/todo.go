@@ -7,6 +7,8 @@ import (
 	"github.com/jaayroots/todo-api/enums"
 	_todoException "github.com/jaayroots/todo-api/pkg/todo/exception"
 	_todoModel "github.com/jaayroots/todo-api/pkg/todo/model"
+
+	_utils "github.com/jaayroots/todo-api/utils"
 )
 
 func ToTodoEntity(todoReq *_todoModel.TodoReq) (*entities.Todo, error) {
@@ -42,5 +44,23 @@ func ToTodoRes(todo *entities.Todo) *_todoModel.TodoRes {
 		DueDate:     int64(todo.DueDate.Unix()),
 		CreatedAt:   todo.CreatedAt.Unix(),
 		UpdatedAt:   todo.UpdatedAt.Unix(),
+	}
+}
+
+func ToTodoSearchRes(todoSearchReq *_todoModel.TodoSearchReq, todos []*entities.Todo, total int) *_todoModel.TodoSearchRes {
+
+	todoResList := make([]*_todoModel.TodoRes, 0, len(todos))
+	for _, todo := range todos {
+		todoResList = append(todoResList, ToTodoRes(todo))
+	}
+
+	_, _, totalPage := _utils.PaginateCalculate(todoSearchReq.Page, todoSearchReq.Limit, total)
+	return &_todoModel.TodoSearchRes{
+		Item: todoResList,
+		Paginate: _todoModel.PaginateResult{
+			Page:      int64(todoSearchReq.Page),
+			TotalPage: int64(totalPage),
+			Total:     int64(total),
+		},
 	}
 }

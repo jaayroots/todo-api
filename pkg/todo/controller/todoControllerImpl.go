@@ -122,3 +122,27 @@ func (c *todoContollerImpl) Delete(pctx echo.Context) error {
 	return custom.Response(pctx, http.StatusOK, nil, "", nil)
 
 }
+
+func (c *todoContollerImpl) FindAll(pctx echo.Context) error {
+
+	val := pctx.Get("user")
+	_, ok := val.(*_userModel.UserRes)
+	if !ok {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
+	}
+
+	TodoSearchReq := new(_todoModel.TodoSearchReq)
+	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	if err := customerEchoRequest.Build(TodoSearchReq); err != nil {
+		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
+	}
+
+	ctx := pctx.Request().Context()
+	todoSearch, err := c.todoService.FindAll(ctx, TodoSearchReq)
+	if err != nil {
+		return custom.Response(pctx, http.StatusBadRequest, nil, err.Error(), nil)
+	}
+
+	return custom.Response(pctx, http.StatusOK, todoSearch, "", nil)
+
+}

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	_todoMapper "github.com/jaayroots/todo-api/pkg/todo/mapper"
 	_todoModel "github.com/jaayroots/todo-api/pkg/todo/model"
@@ -25,7 +24,6 @@ func (s *todoServiceImpl) Get(ctx context.Context, todoID int) (*_todoModel.Todo
 		return nil, err
 	}
 
-	fmt.Println(todo)
 	todoRes := _todoMapper.ToTodoRes(todo)
 	return todoRes, nil
 }
@@ -71,4 +69,14 @@ func (s *todoServiceImpl) Delete(ctx context.Context, todoID int) (*_todoModel.T
 
 	todoRes := _todoMapper.ToTodoRes(todoEntity)
 	return todoRes, nil
+}
+
+func (s *todoServiceImpl) FindAll(ctx context.Context, todoSearchReq *_todoModel.TodoSearchReq) (*_todoModel.TodoSearchRes, error) {
+	todos, total, err := s.todoRepository.FindAll(ctx, todoSearchReq)
+	if err != nil {
+		return nil, err
+	}
+
+	return _todoMapper.ToTodoSearchRes(todoSearchReq, todos, total), nil
+
 }
