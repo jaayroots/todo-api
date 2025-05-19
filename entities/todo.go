@@ -49,15 +49,8 @@ func (t *Todo) BeforeUpdate(tx *gorm.DB) (err error) {
 
 func (t *Todo) BeforeDelete(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
-		err := tx.Model(&Todo{}).
-			Where("id = ?", t.ID).
-			Updates(map[string]interface{}{
-				"deleted_by": userID,
-				"updated_at": time.Now(),
-			}).Error
-		if err != nil {
-			return err
-		}
+		tx.Statement.SetColumn("DeletedBy", userID)
+		tx.Statement.SetColumn("UpdatedAt", time.Now())
 	}
-	return
+	return nil
 }
