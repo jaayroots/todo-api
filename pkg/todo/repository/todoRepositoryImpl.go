@@ -53,7 +53,7 @@ func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *enti
 
 	todoEntity := new(entities.Todo)
 
-	err = r.db.Connect().
+	err = r.db.Connect().WithContext(ctx).
 		Model(&entities.Todo{}).
 		Where("id = ?", todoID).
 		Updates(todo).
