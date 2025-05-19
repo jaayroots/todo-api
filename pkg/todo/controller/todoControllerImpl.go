@@ -32,7 +32,7 @@ func (c *todoContollerImpl) Get(pctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
 	}
 
-	todoID, err := _utils.StrToint(pctx.Param("todoID"))
+	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid todoID", nil)
 	}
@@ -79,7 +79,7 @@ func (c *todoContollerImpl) Update(pctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
 	}
 
-	todoID, err := _utils.StrToint(pctx.Param("todoID"))
+	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid todoID", nil)
 	}
@@ -108,7 +108,7 @@ func (c *todoContollerImpl) Delete(pctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
 	}
 
-	todoID, err := _utils.StrToint(pctx.Param("todoID"))
+	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid todoID", nil)
 	}

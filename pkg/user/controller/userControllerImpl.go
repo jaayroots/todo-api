@@ -25,7 +25,7 @@ func NewUserControllerImpl(
 
 func (c *userContollerImpl) GetByUserID(pctx echo.Context) error {
 
-	userID, err := _utils.StrToint(pctx.Param("userID"))
+	userID, err := _utils.StrToUint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
@@ -48,7 +48,7 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
 
-	userID, err := _utils.StrToint(pctx.Param("userID"))
+	userID, err := _utils.StrToUint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
@@ -64,7 +64,7 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 
 func (c *userContollerImpl) Delete(pctx echo.Context) error {
 
-	userID, err := _utils.StrToint(pctx.Param("userID"))
+	userID, err := _utils.StrToUint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}

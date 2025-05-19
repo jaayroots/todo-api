@@ -18,7 +18,7 @@ func NewTodoServiceImpl(
 	return &todoServiceImpl{todoRepository}
 
 }
-func (s *todoServiceImpl) Get(ctx context.Context, todoID int) (*_todoModel.TodoRes, error) {
+func (s *todoServiceImpl) Get(ctx context.Context, todoID uint) (*_todoModel.TodoRes, error) {
 	todo, err := s.todoRepository.FindByID(ctx, todoID)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (s *todoServiceImpl) Create(ctx context.Context, todoReq *_todoModel.TodoRe
 	return todoRes, nil
 }
 
-func (s *todoServiceImpl) Update(ctx context.Context, todoID int, todoReq *_todoModel.TodoReq) (*_todoModel.TodoRes, error) {
+func (s *todoServiceImpl) Update(ctx context.Context, todoID uint, todoReq *_todoModel.TodoReq) (*_todoModel.TodoRes, error) {
 
 	todoEntity, err := _todoMapper.ToTodoEntity(todoReq)
 	if err != nil {
@@ -60,7 +60,7 @@ func (s *todoServiceImpl) Update(ctx context.Context, todoID int, todoReq *_todo
 	return todoRes, nil
 }
 
-func (s *todoServiceImpl) Delete(ctx context.Context, todoID int) (*_todoModel.TodoRes, error) {
+func (s *todoServiceImpl) Delete(ctx context.Context, todoID uint) (*_todoModel.TodoRes, error) {
 
 	todoEntity, err := s.todoRepository.Delete(ctx, todoID)
 	if err != nil {

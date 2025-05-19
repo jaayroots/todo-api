@@ -44,7 +44,7 @@ func (r *todoRepositoryImpl) Create(ctx context.Context, todo *entities.Todo) (*
 
 }
 
-func (r *todoRepositoryImpl) Update(ctx context.Context, todoID int, todo *entities.Todo) (*entities.Todo, error) {
+func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *entities.Todo) (*entities.Todo, error) {
 
 	_, err := r.FindByID(ctx, todoID)
 	if err != nil {
@@ -66,7 +66,7 @@ func (r *todoRepositoryImpl) Update(ctx context.Context, todoID int, todo *entit
 	return todoEntity, nil
 }
 
-func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID int) (*entities.Todo, error) {
+func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID uint) (*entities.Todo, error) {
 
 	todoEntity, err := r.FindByID(ctx, todoID)
 	if err != nil {
@@ -84,7 +84,7 @@ func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID int) (*entities.
 	return todoEntity, nil
 }
 
-func (r *todoRepositoryImpl) FindByID(ctx context.Context, todoID int) (*entities.Todo, error) {
+func (r *todoRepositoryImpl) FindByID(ctx context.Context, todoID uint) (*entities.Todo, error) {
 
 	todo := new(entities.Todo)
 	err := r.db.Connect().
