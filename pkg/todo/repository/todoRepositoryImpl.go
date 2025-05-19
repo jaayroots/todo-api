@@ -67,16 +67,14 @@ func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *enti
 }
 
 func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID uint) (*entities.Todo, error) {
-
 	todoEntity, err := r.FindByID(ctx, todoID)
 	if err != nil {
 		return nil, err
 	}
 
-	err = r.db.Connect().WithContext(ctx).
-		Model(&entities.Todo{}).
-		Where("id = ?", todoID).
-		Delete(&entities.Todo{}).Error
+	err = r.db.Connect().
+		WithContext(ctx).
+		Delete(todoEntity).Error
 	if err != nil {
 		return nil, _todoException.CannotDeleteTodo()
 	}

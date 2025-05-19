@@ -27,9 +27,9 @@ type Todo struct {
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	CreatedBy uint  `gorm:"not null"`
-	UpdatedBy uint  `gorm:"not null"`
-	DeletedBy *uint `gorm:"default:null"`
+	CreatedBy uint `gorm:"not null"`
+	UpdatedBy uint `gorm:"not null"`
+	DeletedBy uint `gorm:"column:deleted_by"`
 }
 
 func (t *Todo) BeforeCreate(tx *gorm.DB) (err error) {
@@ -50,7 +50,6 @@ func (t *Todo) BeforeUpdate(tx *gorm.DB) (err error) {
 func (t *Todo) BeforeDelete(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		tx.Statement.SetColumn("DeletedBy", userID)
-		tx.Statement.SetColumn("UpdatedAt", time.Now())
 	}
 	return nil
 }
