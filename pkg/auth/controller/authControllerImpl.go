@@ -70,7 +70,7 @@ func (c *authContollerImpl) Logout(pctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "")
 	}
 
-	err := c.authService.Logout(user.ID)
+	err := c.authService.Logout(uint(user.ID))
 	if err != nil {
 		return custom.Response(pctx, http.StatusUnauthorized, nil, "", err)
 	}

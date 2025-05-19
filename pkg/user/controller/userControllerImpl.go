@@ -30,7 +30,7 @@ func (c *userContollerImpl) GetByUserID(pctx echo.Context) error {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	user, err := c.userService.GetByUserID(userID)
+	user, err := c.userService.GetByUserID(uint(userID))
 	if err != nil {
 		return custom.Response(pctx, http.StatusNotFound, nil, "", err)
 	}
@@ -53,7 +53,7 @@ func (c *userContollerImpl) Update(pctx echo.Context) error {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	err = c.userService.Update(userID, updateReq)
+	err = c.userService.Update(uint(userID), updateReq)
 	if err != nil {
 		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
 	}
@@ -69,7 +69,7 @@ func (c *userContollerImpl) Delete(pctx echo.Context) error {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	err = c.userService.Delete(userID)
+	err = c.userService.Delete(uint(userID))
 	if err != nil {
 		return custom.Response(pctx, http.StatusInternalServerError, nil, "", err)
 	}

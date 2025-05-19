@@ -17,4 +17,5 @@ type User struct {
 
 	CreatedBy []Todo `gorm:"foreignKey:CreatedBy;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	UpdatedBy []Todo `gorm:"foreignKey:UpdatedBy;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	DeletedBy []Todo `gorm:"foreignKey:DeletedBy;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

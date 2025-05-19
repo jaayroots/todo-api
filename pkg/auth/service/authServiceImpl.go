@@ -90,7 +90,7 @@ func (s *authServiceImpl) Login(loginReq *_authModel.LoginReq) (*_authModel.Logi
 	return _authMapper.ToAuthRes(user, token), nil
 }
 
-func (s *authServiceImpl) Logout(userID int) error {
+func (s *authServiceImpl) Logout(userID uint) error {
 
 	user, err := s.userRepository.GetByUserID(userID)
 	if err != nil {

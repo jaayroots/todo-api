@@ -33,9 +33,9 @@ type (
 	}
 
 	TodoFilterReq struct {
-		Title  *string `json:"title"`
-		Description  *string `json:"description"`
-		Status *int    `json:"status"`
+		Title       *string `json:"title"`
+		Description *string `json:"description"`
+		Status      *int    `json:"status"`
 	}
 
 	TodoSearchRes struct {

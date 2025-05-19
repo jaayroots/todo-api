@@ -25,7 +25,7 @@ func ToAuthRes(user *entities.User, token string) *_authModel.LoginRes {
 func ToSessionEntity(user *entities.User, token string, exp time.Time, ipAddress string) *entities.Session {
 
 	userEntity := &entities.Session{
-		UserID:    int(user.ID),
+		UserID:    user.ID,
 		Token:     token,
 		ExpiresAt: exp,
 		IpAddress: ipAddress,

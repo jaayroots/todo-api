@@ -17,7 +17,7 @@ func NewUserServiceImpl(
 	return &userServiceImpl{userRepository}
 }
 
-func (s *userServiceImpl) GetByUserID(userID int) (*_userModel.UserRes, error) {
+func (s *userServiceImpl) GetByUserID(userID uint) (*_userModel.UserRes, error) {
 
 	user, err := s.userRepository.GetByUserID(userID)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *userServiceImpl) GetByUserID(userID int) (*_userModel.UserRes, error) {
 	return userRes, nil
 }
 
-func (s *userServiceImpl) Update(userID int, userUpdateReq *_userModel.UserUpdateReq) error {
+func (s *userServiceImpl) Update(userID uint, userUpdateReq *_userModel.UserUpdateReq) error {
 	userEntity, err := _userMapper.ToUserUpdateEntity(userUpdateReq)
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (s *userServiceImpl) Update(userID int, userUpdateReq *_userModel.UserUpdat
 	return nil
 }
 
-func (s *userServiceImpl) Delete(userID int) error {
+func (s *userServiceImpl) Delete(userID uint) error {
 
 	user, err := s.userRepository.GetByUserID(userID)
 	if err != nil {
