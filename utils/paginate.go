@@ -1,20 +1,22 @@
 package utils
 
-func PaginateCalculate(pageReq int, limitReq int, totalReq int) (offset int, limit int, totalPage int) {
-	page := pageReq
+func PaginateCalculate(page, limit, total int) (offset, limitOut, totalPage int) {
 	if page <= 0 {
 		page = 1
 	}
-	limit = limitReq
 	if limit <= 0 {
 		limit = 10
 	}
 
 	offset = (page - 1) * limit
 
-	totalPage = 0
-	if totalReq > 0 {
-		totalPage = int((int64(totalReq) + int64(limit) - 1) / int64(limit))
+	if total == 0 {
+		totalPage = 1
+	} else {
+		totalPage = total / limit
+		if total%limit != 0 {
+			totalPage++
+		}
 	}
 
 	return offset, limit, totalPage
