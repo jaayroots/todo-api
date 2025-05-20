@@ -44,9 +44,9 @@ func (r *todoRepositoryImpl) Create(ctx context.Context, todo *entities.Todo) (*
 
 }
 
-func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *entities.Todo) (*entities.Todo, error) {
+func (r *todoRepositoryImpl) Update(ctx context.Context, todo *entities.Todo) (*entities.Todo, error) {
 
-	_, err := r.FindByID(ctx, todoID)
+	_, err := r.FindByID(ctx, todo.ID)
 	if err != nil {
 		return nil, err
 	}

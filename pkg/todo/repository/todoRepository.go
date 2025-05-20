@@ -10,7 +10,7 @@ import (
 type TodoRepository interface {
 	Create(ctx context.Context, todo *entities.Todo) (*entities.Todo, error)
 	FindByID(ctx context.Context, todoID uint) (*entities.Todo, error)
-	Update(ctx context.Context, todoID uint, todo *entities.Todo) (*entities.Todo, error)
+	Update(ctx context.Context, todo *entities.Todo) (*entities.Todo, error)
 	Delete(ctx context.Context, todoID uint) (*entities.Todo, error)
 	FindAll(ctx context.Context, todoSearchReq *_todoModel.TodoSearchReq) ([]*entities.Todo, int, error)
 }

@@ -51,7 +51,7 @@ func (s *todoServiceImpl) Update(ctx context.Context, todoID uint, todoReq *_tod
 		return nil, err
 	}
 
-	todoEntity, err = s.todoRepository.Update(ctx, todoID, todoEntity)
+	todoEntity, err = s.todoRepository.Update(ctx, todoEntity)
 	if err != nil {
 		return nil, err
 	}
