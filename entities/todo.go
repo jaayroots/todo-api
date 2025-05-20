@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/jaayroots/todo-api/enums"
@@ -32,21 +33,32 @@ type Todo struct {
 	DeletedBy *uint `gorm:"column:deleted_by"`
 }
 
-func (t *Todo) BeforeCreate(tx *gorm.DB) {
+func (t *Todo) BeforeCreate(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		t.CreatedBy = userID
 		t.UpdatedBy = userID
 	}
+	return
 }
 
-func (t *Todo) BeforeUpdate(tx *gorm.DB) {
+func (t *Todo) BeforeUpdate(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		t.UpdatedBy = userID
 	}
+	return
 }
 
-func (t *Todo) BeforeDelete(tx *gorm.DB) {
+func (t *Todo) BeforeDelete(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
-		t.DeletedBy = &userID
+		err = tx.Model(t).
+			Where("id = ?", t.ID).
+			Updates(map[string]interface{}{
+				"deleted_by": sql.NullInt64{Int64: int64(userID), Valid: true},
+				"updated_at": time.Now(),
+			}).Error
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
