@@ -26,6 +26,7 @@ func NewTodoServiceImpl(
 
 }
 func (s *todoServiceImpl) Get(ctx context.Context, todoID uint) (*_todoModel.TodoRes, error) {
+	
 	todoEntity, err := s.todoRepository.FindByID(ctx, todoID)
 	if err != nil {
 		return nil, err
@@ -103,6 +104,7 @@ func (s *todoServiceImpl) Delete(ctx context.Context, todoID uint) (*_todoModel.
 }
 
 func (s *todoServiceImpl) FindAll(ctx context.Context, todoSearchReq *_todoModel.TodoSearchReq) (*_todoModel.TodoSearchRes, error) {
+
 	todos, total, err := s.todoRepository.FindAll(ctx, todoSearchReq)
 	if err != nil {
 		return nil, err

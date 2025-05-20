@@ -67,7 +67,12 @@ func ToTodoRes(todo *entities.Todo, user []*entities.User) *_todoModel.TodoRes {
 	}
 }
 
-func ToTodoSearchRes(todoSearchReq *_todoModel.TodoSearchReq, user []*entities.User, todos []*entities.Todo, total int) *_todoModel.TodoSearchRes {
+func ToTodoSearchRes(
+	todoSearchReq *_todoModel.TodoSearchReq,
+	user []*entities.User,
+	todos []*entities.Todo,
+	total int,
+) *_todoModel.TodoSearchRes {
 
 	todoResList := make([]*_todoModel.TodoRes, 0, len(todos))
 	for _, todo := range todos {
