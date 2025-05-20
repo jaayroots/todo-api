@@ -35,7 +35,24 @@ func ToTodoEntity(todoReq *_todoModel.TodoReq, todoID uint) (*entities.Todo, err
 	return todoEntity, nil
 }
 
-func ToTodoRes(todo *entities.Todo) *_todoModel.TodoRes {
+func ToTodoRes(todo *entities.Todo, user []*entities.User) *_todoModel.TodoRes {
+
+	userMap := _utils.MapperByID(user)
+	createdBy := func() *string {
+		if user, ok := userMap[todo.CreatedBy]; ok {
+			fullName := user.FirstName + " " + user.LastName
+			return &fullName
+		}
+		return nil
+	}()
+
+	updatedBy := func() *string {
+		if user, ok := userMap[todo.UpdatedBy]; ok {
+			fullName := user.FirstName + " " + user.LastName
+			return &fullName
+		}
+		return nil
+	}()
 
 	return &_todoModel.TodoRes{
 		ID:          int(todo.ID),
@@ -45,14 +62,16 @@ func ToTodoRes(todo *entities.Todo) *_todoModel.TodoRes {
 		DueDate:     int64(todo.DueDate.Unix()),
 		CreatedAt:   todo.CreatedAt.Unix(),
 		UpdatedAt:   todo.UpdatedAt.Unix(),
+		CreatedBy:   createdBy,
+		UpdatedBy:   updatedBy,
 	}
 }
 
-func ToTodoSearchRes(todoSearchReq *_todoModel.TodoSearchReq, todos []*entities.Todo, total int) *_todoModel.TodoSearchRes {
+func ToTodoSearchRes(todoSearchReq *_todoModel.TodoSearchReq, user []*entities.User, todos []*entities.Todo, total int) *_todoModel.TodoSearchRes {
 
 	todoResList := make([]*_todoModel.TodoRes, 0, len(todos))
 	for _, todo := range todos {
-		todoResList = append(todoResList, ToTodoRes(todo))
+		todoResList = append(todoResList, ToTodoRes(todo, user))
 	}
 
 	_, _, totalPage := _utils.PaginateCalculate(todoSearchReq.Page, todoSearchReq.Limit, total)

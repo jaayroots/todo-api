@@ -13,7 +13,7 @@ func (s *echoServer) usersRouter(m *authorizingMiddleware) {
 	userService := _userService.NewUserServiceImpl(userRepository)
 	userController := _userController.NewUserControllerImpl(userService)
 
-	router.GET("/:userID", userController.GetByUserID, m.Authorizing)
+	router.GET("/:userID", userController.FindByID, m.Authorizing)
 	router.PATCH("/:userID", userController.Update, m.Authorizing)
 	router.DELETE("/:userID", userController.Delete, m.Authorizing)
 }

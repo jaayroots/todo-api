@@ -17,13 +17,15 @@ type (
 	}
 
 	TodoRes struct {
-		ID          int    `json:"id"`
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		Status      int    `json:"status"`
-		DueDate     int64  `json:"due_date"`
-		CreatedAt   int64  `json:"created_at"`
-		UpdatedAt   int64  `json:"updated_at"`
+		ID          int     `json:"id"`
+		Title       string  `json:"title"`
+		Description string  `json:"description"`
+		Status      int     `json:"status"`
+		DueDate     int64   `json:"due_date"`
+		CreatedAt   int64   `json:"created_at"`
+		UpdatedAt   int64   `json:"updated_at"`
+		CreatedBy   *string `json:"created_by"`
+		UpdatedBy   *string `json:"updated_by"`
 	}
 
 	TodoSearchReq struct {

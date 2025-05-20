@@ -6,25 +6,38 @@ import (
 	_todoMapper "github.com/jaayroots/todo-api/pkg/todo/mapper"
 	_todoModel "github.com/jaayroots/todo-api/pkg/todo/model"
 	_todoRepository "github.com/jaayroots/todo-api/pkg/todo/repository"
+	_userRepository "github.com/jaayroots/todo-api/pkg/user/repository"
+	_utils "github.com/jaayroots/todo-api/utils"
 )
 
 type todoServiceImpl struct {
 	todoRepository _todoRepository.TodoRepository
+	userRepository _userRepository.UserRepository
 }
 
 func NewTodoServiceImpl(
 	todoRepository _todoRepository.TodoRepository,
+	userRepository _userRepository.UserRepository,
 ) TodoService {
-	return &todoServiceImpl{todoRepository}
+	return &todoServiceImpl{
+		todoRepository: todoRepository,
+		userRepository: userRepository,
+	}
 
 }
 func (s *todoServiceImpl) Get(ctx context.Context, todoID uint) (*_todoModel.TodoRes, error) {
-	todo, err := s.todoRepository.FindByID(ctx, todoID)
+	todoEntity, err := s.todoRepository.FindByID(ctx, todoID)
 	if err != nil {
 		return nil, err
 	}
 
-	todoRes := _todoMapper.ToTodoRes(todo)
+	userIDArray := _utils.ExtractAuditUserID(todoEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	todoRes := _todoMapper.ToTodoRes(todoEntity, userArr)
 	return todoRes, nil
 }
 
@@ -35,12 +48,18 @@ func (s *todoServiceImpl) Create(ctx context.Context, todoReq *_todoModel.TodoRe
 		return nil, err
 	}
 
-	_, err = s.todoRepository.Create(ctx, todoEntity)
+	todoEntity, err = s.todoRepository.Create(ctx, todoEntity)
 	if err != nil {
 		return nil, err
 	}
 
-	todoRes := _todoMapper.ToTodoRes(todoEntity)
+	userIDArray := _utils.ExtractAuditUserID(todoEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	todoRes := _todoMapper.ToTodoRes(todoEntity, userArr)
 	return todoRes, nil
 }
 
@@ -56,7 +75,13 @@ func (s *todoServiceImpl) Update(ctx context.Context, todoID uint, todoReq *_tod
 		return nil, err
 	}
 
-	todoRes := _todoMapper.ToTodoRes(todoEntity)
+	userIDArray := _utils.ExtractAuditUserID(todoEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	todoRes := _todoMapper.ToTodoRes(todoEntity, userArr)
 	return todoRes, nil
 }
 
@@ -67,7 +92,13 @@ func (s *todoServiceImpl) Delete(ctx context.Context, todoID uint) (*_todoModel.
 		return nil, err
 	}
 
-	todoRes := _todoMapper.ToTodoRes(todoEntity)
+	userIDArray := _utils.ExtractAuditUserID(todoEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	todoRes := _todoMapper.ToTodoRes(todoEntity, userArr)
 	return todoRes, nil
 }
 
@@ -77,6 +108,12 @@ func (s *todoServiceImpl) FindAll(ctx context.Context, todoSearchReq *_todoModel
 		return nil, err
 	}
 
-	return _todoMapper.ToTodoSearchRes(todoSearchReq, todos, total), nil
+	userIDArray := _utils.ExtractAuditUserIDs(todos)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	return _todoMapper.ToTodoSearchRes(todoSearchReq, userArr, todos, total), nil
 
 }

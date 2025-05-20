@@ -33,6 +33,21 @@ type Todo struct {
 	DeletedBy *uint `gorm:"column:deleted_by"`
 }
 
+func (t *Todo) GetCreatedBy() uint {
+	return t.CreatedBy
+}
+
+func (t *Todo) GetUpdatedBy() uint {
+	return t.UpdatedBy
+}
+
+func (t *Todo) GetDeletedBy() uint {
+	if t.DeletedBy != nil {
+		return *t.DeletedBy
+	}
+	return 0
+}
+
 func (t *Todo) BeforeCreate(tx *gorm.DB) (err error) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		t.CreatedBy = userID

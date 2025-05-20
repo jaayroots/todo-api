@@ -92,7 +92,7 @@ func (s *authServiceImpl) Login(loginReq *_authModel.LoginReq) (*_authModel.Logi
 
 func (s *authServiceImpl) Logout(userID uint) error {
 
-	user, err := s.userRepository.GetByUserID(userID)
+	user, err := s.userRepository.FindByID(userID)
 	if err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func (s *authServiceImpl) Authorizing(token string) (*_authModel.LoginRes, error
 		return nil, _authException.TokenInvalid()
 	}
 
-	user, err := s.userRepository.GetByUserID(session.UserID)
+	user, err := s.userRepository.FindByID(session.UserID)
 	if err != nil {
 		return nil, err
 	}

@@ -19,3 +19,7 @@ type User struct {
 	UpdatedBy []Todo `gorm:"foreignKey:UpdatedBy;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	DeletedBy []Todo `gorm:"foreignKey:DeletedBy;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
+
+func (u User) GetID() uint {
+	return u.ID
+}

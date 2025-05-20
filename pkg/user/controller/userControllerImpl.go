@@ -23,14 +23,14 @@ func NewUserControllerImpl(
 	}
 }
 
-func (c *userContollerImpl) GetByUserID(pctx echo.Context) error {
+func (c *userContollerImpl) FindByID(pctx echo.Context) error {
 
 	userID, err := _utils.StrToUint(pctx.Param("userID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid userID", nil)
 	}
 
-	user, err := c.userService.GetByUserID(uint(userID))
+	user, err := c.userService.FindByID(uint(userID))
 	if err != nil {
 		return custom.Response(pctx, http.StatusNotFound, nil, "", err)
 	}
