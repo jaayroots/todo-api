@@ -54,8 +54,6 @@ func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *enti
 	todoEntity := new(entities.Todo)
 
 	err = r.db.Connect().WithContext(ctx).
-		Model(&entities.Todo{}).
-		Where("id = ?", todoID).
 		Updates(todo).
 		Scan(todoEntity).
 		Error
@@ -67,6 +65,7 @@ func (r *todoRepositoryImpl) Update(ctx context.Context, todoID uint, todo *enti
 }
 
 func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID uint) (*entities.Todo, error) {
+
 	todoEntity, err := r.FindByID(ctx, todoID)
 	if err != nil {
 		return nil, err
@@ -75,6 +74,7 @@ func (r *todoRepositoryImpl) Delete(ctx context.Context, todoID uint) (*entities
 	err = r.db.Connect().
 		WithContext(ctx).
 		Delete(todoEntity).Error
+
 	if err != nil {
 		return nil, _todoException.CannotDeleteTodo()
 	}

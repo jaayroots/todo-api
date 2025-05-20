@@ -27,29 +27,26 @@ type Todo struct {
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	CreatedBy uint `gorm:"not null"`
-	UpdatedBy uint `gorm:"not null"`
-	DeletedBy uint `gorm:"column:deleted_by"`
+	CreatedBy uint  `gorm:"not null"`
+	UpdatedBy uint  `gorm:"not null"`
+	DeletedBy *uint `gorm:"column:deleted_by"`
 }
 
-func (t *Todo) BeforeCreate(tx *gorm.DB) (err error) {
+func (t *Todo) BeforeCreate(tx *gorm.DB) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		t.CreatedBy = userID
 		t.UpdatedBy = userID
 	}
-	return
 }
 
-func (t *Todo) BeforeUpdate(tx *gorm.DB) (err error) {
+func (t *Todo) BeforeUpdate(tx *gorm.DB) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
 		t.UpdatedBy = userID
 	}
-	return
 }
 
-func (t *Todo) BeforeDelete(tx *gorm.DB) (err error) {
+func (t *Todo) BeforeDelete(tx *gorm.DB) {
 	if userID, ok := tx.Statement.Context.Value("userID").(uint); ok {
-		tx.Statement.SetColumn("DeletedBy", userID)
+		t.DeletedBy = &userID
 	}
-	return nil
 }
