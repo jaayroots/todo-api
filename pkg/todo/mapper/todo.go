@@ -11,7 +11,7 @@ import (
 	_utils "github.com/jaayroots/todo-api/utils"
 )
 
-func ToTodoEntity(todoReq *_todoModel.TodoReq, todoId *uint) (*entities.Todo, error) {
+func ToTodoEntity(todoReq *_todoModel.TodoReq, todoID uint) (*entities.Todo, error) {
 
 	var dueDate *time.Time
 	if todoReq.DueDate != 0 {
@@ -25,7 +25,7 @@ func ToTodoEntity(todoReq *_todoModel.TodoReq, todoId *uint) (*entities.Todo, er
 	}
 
 	todoEntity := &entities.Todo{
-		ID:          *todoId,
+		ID:          todoID,
 		Title:       todoReq.Title,
 		Description: todoReq.Description,
 		Status:      status,

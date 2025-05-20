@@ -30,7 +30,7 @@ func (s *todoServiceImpl) Get(ctx context.Context, todoID uint) (*_todoModel.Tod
 
 func (s *todoServiceImpl) Create(ctx context.Context, todoReq *_todoModel.TodoReq) (*_todoModel.TodoRes, error) {
 
-	todoEntity, err := _todoMapper.ToTodoEntity(todoReq, nil)
+	todoEntity, err := _todoMapper.ToTodoEntity(todoReq, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *todoServiceImpl) Create(ctx context.Context, todoReq *_todoModel.TodoRe
 
 func (s *todoServiceImpl) Update(ctx context.Context, todoID uint, todoReq *_todoModel.TodoReq) (*_todoModel.TodoRes, error) {
 
-	todoEntity, err := _todoMapper.ToTodoEntity(todoReq, &todoID)
+	todoEntity, err := _todoMapper.ToTodoEntity(todoReq, todoID)
 	if err != nil {
 		return nil, err
 	}
