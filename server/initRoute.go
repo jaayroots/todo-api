@@ -15,6 +15,7 @@ func (s *echoServer) initRoute() {
 	s.authRouter(authorizingMiddleware)
 	s.usersRouter(authorizingMiddleware)
 	s.todosRouter(authorizingMiddleware)
+	s.itemsRouter(authorizingMiddleware)
 }
 
 func (s *echoServer) getAuthorizingMiddleware() *authorizingMiddleware {

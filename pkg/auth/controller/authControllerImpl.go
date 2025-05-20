@@ -5,7 +5,10 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/jaayroots/todo-api/pctxkeys"
 	"github.com/jaayroots/todo-api/pkg/custom"
+	"github.com/jaayroots/todo-api/utils"
+
 	"github.com/labstack/echo/v4"
 
 	_authModel "github.com/jaayroots/todo-api/pkg/auth/model"
@@ -29,7 +32,7 @@ func (c *authContollerImpl) Register(pctx echo.Context) error {
 
 	createReq := new(_userModel.UserReq)
 
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(createReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
@@ -47,7 +50,7 @@ func (c *authContollerImpl) Login(pctx echo.Context) error {
 
 	loginReq := new(_authModel.LoginReq)
 
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(loginReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
@@ -97,8 +100,11 @@ func (c *authContollerImpl) Authorizing(pctx echo.Context, next echo.HandlerFunc
 	}
 
 	pctx.Set("user", loginRes.User)
+	lang := utils.ValidateLangOrDefault(pctx)
 
-	ctx := context.WithValue(pctx.Request().Context(), "userID", uint(loginRes.User.ID))
+	ctx := context.WithValue(pctx.Request().Context(), pctxkeys.ContextKeyUserID, uint(loginRes.User.ID))
+	ctx = context.WithValue(ctx, pctxkeys.ContextKeyLang, lang)
+
 	req := pctx.Request().WithContext(ctx)
 
 	pctx.SetRequest(req)

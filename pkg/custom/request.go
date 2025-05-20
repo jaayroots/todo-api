@@ -22,7 +22,7 @@ var (
 	validatorInstanct *validator.Validate
 )
 
-func NewCustomerEchoRequest(echoRequest echo.Context) EchoRequest {
+func NewCustomEchoRequest(echoRequest echo.Context) EchoRequest {
 	once.Do(func() {
 		validatorInstanct = validator.New()
 	})

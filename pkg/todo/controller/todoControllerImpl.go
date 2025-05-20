@@ -56,7 +56,7 @@ func (c *todoContollerImpl) Create(pctx echo.Context) error {
 	}
 
 	todoReq := new(_todoModel.TodoReq)
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(todoReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
@@ -85,7 +85,7 @@ func (c *todoContollerImpl) Update(pctx echo.Context) error {
 	}
 
 	todoReq := new(_todoModel.TodoReq)
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(todoReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
@@ -132,7 +132,7 @@ func (c *todoContollerImpl) FindAll(pctx echo.Context) error {
 	}
 
 	TodoSearchReq := new(_todoModel.TodoSearchReq)
-	customerEchoRequest := custom.NewCustomerEchoRequest(pctx)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(TodoSearchReq); err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
 	}
