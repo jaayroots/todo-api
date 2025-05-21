@@ -98,3 +98,21 @@ func (c *itemContollerImpl) Delete(pctx echo.Context) error {
 	return custom.Response(pctx, http.StatusOK, nil, "", nil)
 
 }
+
+func (c *itemContollerImpl) FindAll(pctx echo.Context) error {
+
+	itemSearchReq := new(_itemModel.ItemSearchReq)
+	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
+	if err := customerEchoRequest.Build(itemSearchReq); err != nil {
+		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid request", err)
+	}
+
+	ctx := pctx.Request().Context()
+	itemSearch, err := c.itemService.FindAll(ctx, itemSearchReq)
+	if err != nil {
+		return custom.Response(pctx, http.StatusBadRequest, nil, err.Error(), nil)
+	}
+
+	return custom.Response(pctx, http.StatusOK, itemSearch, "", nil)
+
+}

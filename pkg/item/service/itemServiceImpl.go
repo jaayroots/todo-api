@@ -106,3 +106,20 @@ func (s *itemServiceImpl) Delete(ctx context.Context, itemID uint) (*_itemModel.
 	return itemRes, nil
 
 }
+
+func (s *itemServiceImpl) FindAll(ctx context.Context, itemSearchReq *_itemModel.ItemSearchReq) (*_itemModel.ItemSearchRes, error) {
+
+	items, total, err := s.itemRepository.FindAll(ctx, itemSearchReq)
+	if err != nil {
+		return nil, err
+	}
+
+	userIDArray := _utils.ExtractAuditUserIDs(items)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	return _itemMapper.ToItemSearchRes(ctx, itemSearchReq, userArr, items, total), nil
+
+}

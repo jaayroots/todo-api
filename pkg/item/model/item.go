@@ -36,4 +36,27 @@ type (
 		CreatedBy   *string `json:"created_by"`
 		UpdatedBy   *string `json:"updated_by"`
 	}
+
+	ItemSearchReq struct {
+		Page   int           `json:"page" validate:"required"`
+		Limit  int           `json:"limit" validate:"required"`
+		Filter ItemFilterReq `json:"filter" validate:"required"`
+	}
+
+	ItemFilterReq struct {
+		Title       *string `json:"title"`
+		Description *string `json:"description"`
+		Status      *int    `json:"status"`
+	}
+
+	ItemSearchRes struct {
+		Item     []*ItemRes     `json:"item"`
+		Paginate PaginateResult `json:"paginate"`
+	}
+
+	PaginateResult struct {
+		Page      int64 `json:"page"`
+		TotalPage int64 `json:"totalPage"`
+		Total     int64 `json:"total"`
+	}
 )

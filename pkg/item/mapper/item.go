@@ -134,3 +134,27 @@ func ToItemWithLangRes(ctx context.Context, item *entities.Item, users []*entiti
 		UpdatedBy:   getFullNameByID(item.UpdatedBy),
 	}
 }
+
+func ToItemSearchRes(
+	ctx context.Context,
+	itemSearchReq *_itemModel.ItemSearchReq,
+	user []*entities.User,
+	items []*entities.Item,
+	total int,
+) *_itemModel.ItemSearchRes {
+
+	itemResList := make([]*_itemModel.ItemRes, 0, len(items))
+	for _, item := range items {
+		itemResList = append(itemResList, ToItemRes(ctx, item, user))
+	}
+
+	_, _, totalPage := _utils.PaginateCalculate(itemSearchReq.Page, itemSearchReq.Limit, total)
+	return &_itemModel.ItemSearchRes{
+		Item: itemResList,
+		Paginate: _itemModel.PaginateResult{
+			Page:      int64(itemSearchReq.Page),
+			TotalPage: int64(totalPage),
+			Total:     int64(total),
+		},
+	}
+}

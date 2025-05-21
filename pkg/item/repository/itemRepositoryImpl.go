@@ -10,6 +10,10 @@ import (
 	"gorm.io/gorm"
 
 	_itemException "github.com/jaayroots/todo-api/pkg/item/exception"
+
+	_utils "github.com/jaayroots/todo-api/utils"
+
+	_itemModel "github.com/jaayroots/todo-api/pkg/item/model"
 )
 
 type itemRepositoryImpl struct {
@@ -47,6 +51,7 @@ func (r *itemRepositoryImpl) FindByID(ctx context.Context, itemID uint) (*entiti
 	err := r.db.Connect().
 		WithContext(ctx).
 		Model(&entities.Item{}).
+		Preload("Translations").
 		First(item, itemID).
 		Error
 
@@ -56,13 +61,6 @@ func (r *itemRepositoryImpl) FindByID(ctx context.Context, itemID uint) (*entiti
 		}
 		return nil, err
 	}
-
-	itemTranslation, err := r.FindTranslationByID(ctx, itemID)
-	if err != nil {
-		return nil, err
-	}
-
-	item.Translations = itemTranslation
 
 	return item, nil
 }
@@ -172,4 +170,37 @@ func (r *itemRepositoryImpl) Delete(ctx context.Context, itemID uint) (*entities
 	}
 
 	return item, nil
+}
+
+func (r *itemRepositoryImpl) FindAll(ctx context.Context, itemSearchReq *_itemModel.ItemSearchReq) ([]*entities.Item, int, error) {
+
+	var item []*entities.Item
+	var total int64
+
+	query := r.db.Connect().WithContext(ctx).
+		Model(&entities.Item{}).
+		Preload("Translations")
+
+	offset, limit, _ := _utils.PaginateCalculate(itemSearchReq.Page, itemSearchReq.Limit, 0)
+	query = r.searchFilter(query, itemSearchReq)
+
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	if err := query.Offset(offset).Limit(limit).
+		Order("created_at DESC").
+		Find(&item).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return item, int(total), nil
+}
+
+func (r *itemRepositoryImpl) searchFilter(query *gorm.DB, itemSearchReq *_itemModel.ItemSearchReq) *gorm.DB {
+
+	// query = r.filterTitle(query, todoSearchReq.Filter)
+	// query = r.filterDescription(query, todoSearchReq.Filter)
+	// query = r.filterStatus(query, todoSearchReq.Filter)
+	return query
 }
