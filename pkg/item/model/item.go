@@ -56,7 +56,7 @@ type (
 
 	PaginateResult struct {
 		Page      int64 `json:"page"`
-		TotalPage int64 `json:"totalPage"`
+		TotalPage int64 `json:"total_page"`
 		Total     int64 `json:"total"`
 	}
 )

@@ -178,8 +178,7 @@ func (r *itemRepositoryImpl) FindAll(ctx context.Context, itemSearchReq *_itemMo
 	var total int64
 
 	query := r.db.Connect().WithContext(ctx).
-		Model(&entities.Item{}).
-		Preload("Translations")
+		Model(&entities.Item{})
 
 	offset, limit, _ := _utils.PaginateCalculate(itemSearchReq.Page, itemSearchReq.Limit, 0)
 	query = r.searchFilter(query, itemSearchReq)
@@ -189,6 +188,7 @@ func (r *itemRepositoryImpl) FindAll(ctx context.Context, itemSearchReq *_itemMo
 	}
 
 	if err := query.Offset(offset).Limit(limit).
+		Preload("Translations").
 		Order("created_at DESC").
 		Find(&item).Error; err != nil {
 		return nil, 0, err
@@ -199,8 +199,39 @@ func (r *itemRepositoryImpl) FindAll(ctx context.Context, itemSearchReq *_itemMo
 
 func (r *itemRepositoryImpl) searchFilter(query *gorm.DB, itemSearchReq *_itemModel.ItemSearchReq) *gorm.DB {
 
-	// query = r.filterTitle(query, todoSearchReq.Filter)
-	// query = r.filterDescription(query, todoSearchReq.Filter)
-	// query = r.filterStatus(query, todoSearchReq.Filter)
+	query = r.filterTitle(query, itemSearchReq.Filter)
+	query = r.filterDescription(query, itemSearchReq.Filter)
+	return query
+}
+
+func (r *itemRepositoryImpl) filterTitle(query *gorm.DB, todoFilterReq _itemModel.ItemFilterReq) *gorm.DB {
+
+	title := todoFilterReq.Title
+	if title == nil {
+		return query
+	}
+
+	subQuery := query.Session(&gorm.Session{}).Model(&entities.ItemTranslation{}).
+		Select("item_id").
+		Where("title LIKE ?", "%"+*title+"%")
+
+	query = query.Where("id IN (?)", subQuery)
+
+	return query
+}
+
+func (r *itemRepositoryImpl) filterDescription(query *gorm.DB, todoFilterReq _itemModel.ItemFilterReq) *gorm.DB {
+
+	description := todoFilterReq.Description
+	if description == nil {
+		return query
+	}
+
+	subQuery := query.Session(&gorm.Session{}).Model(&entities.ItemTranslation{}).
+		Select("item_id").
+		Where("description LIKE ?", "%"+*description+"%")
+
+	query = query.Where("id IN (?)", subQuery)
+
 	return query
 }
