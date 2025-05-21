@@ -207,7 +207,7 @@ func (r *itemRepositoryImpl) searchFilter(query *gorm.DB, itemSearchReq *_itemMo
 func (r *itemRepositoryImpl) filterTitle(query *gorm.DB, todoFilterReq _itemModel.ItemFilterReq) *gorm.DB {
 
 	title := todoFilterReq.Title
-	if title == nil {
+	if title == nil || *title == ""{
 		return query
 	}
 
@@ -223,7 +223,7 @@ func (r *itemRepositoryImpl) filterTitle(query *gorm.DB, todoFilterReq _itemMode
 func (r *itemRepositoryImpl) filterDescription(query *gorm.DB, todoFilterReq _itemModel.ItemFilterReq) *gorm.DB {
 
 	description := todoFilterReq.Description
-	if description == nil {
+	if description == nil || *description == ""{
 		return query
 	}
 

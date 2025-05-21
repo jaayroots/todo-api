@@ -133,7 +133,7 @@ func (r *todoRepositoryImpl) searchFilter(query *gorm.DB, todoSearchReq *_todoMo
 func (r *todoRepositoryImpl) filterTitle(query *gorm.DB, todoFilterReq _todoModel.TodoFilterReq) *gorm.DB {
 
 	title := todoFilterReq.Title
-	if title == nil {
+	if title == nil || *title == "" {
 		return query
 	}
 
@@ -144,7 +144,7 @@ func (r *todoRepositoryImpl) filterTitle(query *gorm.DB, todoFilterReq _todoMode
 func (r *todoRepositoryImpl) filterDescription(query *gorm.DB, todoFilterReq _todoModel.TodoFilterReq) *gorm.DB {
 
 	description := todoFilterReq.Description
-	if description == nil {
+	if description == nil || *description == "" {
 		return query
 	}
 
