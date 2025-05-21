@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"gorm.io/gorm"
+
+	"github.com/jaayroots/todo-api/pctxkeys"
 )
 
 func setBlameableFieldsBeforeCreate(tx *gorm.DB, createdBy *uint, updatedBy *uint) error {
-	userID, ok := tx.Statement.Context.Value("userID").(uint)
+	userID, ok := tx.Statement.Context.Value(pctxkeys.ContextKeyUserID).(uint)
 	if !ok {
 		return errors.New("userID not found in context")
 	}
@@ -19,7 +21,7 @@ func setBlameableFieldsBeforeCreate(tx *gorm.DB, createdBy *uint, updatedBy *uin
 }
 
 func setBlameableFieldsBeforeUpdate(tx *gorm.DB, updatedBy *uint) error {
-	userID, ok := tx.Statement.Context.Value("userID").(uint)
+	userID, ok := tx.Statement.Context.Value(pctxkeys.ContextKeyUserID).(uint)
 	if !ok {
 		return errors.New("userID not found in context")
 	}
@@ -28,7 +30,7 @@ func setBlameableFieldsBeforeUpdate(tx *gorm.DB, updatedBy *uint) error {
 }
 
 func setBlameableFieldsBeforeDelete(tx *gorm.DB, model interface{}, id uint) error {
-	userID, ok := tx.Statement.Context.Value("userID").(uint)
+	userID, ok := tx.Statement.Context.Value(pctxkeys.ContextKeyUserID).(uint)
 	if !ok {
 		return errors.New("userID not found in context")
 	}

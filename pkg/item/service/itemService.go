@@ -8,6 +8,7 @@ import (
 
 type ItemService interface {
 	Create(ctx context.Context, itemReq *_itemModel.ItemReq) (*_itemModel.ItemRes, error)
-	Get(ctx context.Context, todoID uint) (*_itemModel.ItemResV2, error)
-
+	Get(ctx context.Context, itemID uint) (*_itemModel.ItemWithLangRes, error)
+	Update(ctx context.Context, itemID uint, itemReq *_itemModel.ItemReq) (*_itemModel.ItemRes, error)
+	Delete(ctx context.Context, itemID uint) (*_itemModel.ItemWithLangRes, error)
 }

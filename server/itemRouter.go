@@ -5,7 +5,6 @@ import (
 	_itemRepository "github.com/jaayroots/todo-api/pkg/item/repository"
 	_itemService "github.com/jaayroots/todo-api/pkg/item/service"
 	_userRepository "github.com/jaayroots/todo-api/pkg/user/repository"
-
 )
 
 func (s *echoServer) itemsRouter(m *authorizingMiddleware) {
@@ -18,8 +17,12 @@ func (s *echoServer) itemsRouter(m *authorizingMiddleware) {
 	itemController := _itemController.NewItemControllerImpl(itemService)
 
 	router.POST("", itemController.Create, m.Authorizing)
-	
+
 	router.GET("/:itemID", itemController.Get, m.Authorizing)
 	router.GET("/:lang/:itemID", itemController.Get, m.Authorizing)
+
+	router.PATCH("/:itemID", itemController.Update, m.Authorizing)
+	router.DELETE("/:itemID", itemController.Delete, m.Authorizing)
+
 
 }

@@ -48,19 +48,12 @@ func (s *itemServiceImpl) Create(ctx context.Context, itemReq *_itemModel.ItemRe
 	return itemRes, nil
 }
 
-func (s *itemServiceImpl) Get(ctx context.Context, itemID uint) (*_itemModel.ItemResV2, error) {
+func (s *itemServiceImpl) Get(ctx context.Context, itemID uint) (*_itemModel.ItemWithLangRes, error) {
 
 	itemEntity, err := s.itemRepository.FindByID(ctx, itemID)
 	if err != nil {
 		return nil, err
 	}
-
-	itemTranslationEntity, err := s.itemRepository.FindTranslationByID(ctx, itemID)
-	if err != nil {
-		return nil, err
-	}
-
-	itemEntity.Translations = itemTranslationEntity
 
 	userIDArray := _utils.ExtractAuditUserID(itemEntity)
 	userArr, err := s.userRepository.FindByIDs(userIDArray)
@@ -68,6 +61,48 @@ func (s *itemServiceImpl) Get(ctx context.Context, itemID uint) (*_itemModel.Ite
 		return nil, err
 	}
 
-	itemRes := _itemMapper.ToItemResV2(ctx, itemEntity, userArr)
+	itemRes := _itemMapper.ToItemWithLangRes(ctx, itemEntity, userArr)
 	return itemRes, nil
+}
+
+func (s *itemServiceImpl) Update(ctx context.Context, itemID uint, itemReq *_itemModel.ItemReq) (*_itemModel.ItemRes, error) {
+
+	itemEntity, err := _itemMapper.ToItemEntity(itemReq, itemID)
+	if err != nil {
+		return nil, err
+	}
+
+	_utils.DumpAndExit(itemEntity)
+
+	itemEntity, err = s.itemRepository.Update(ctx, itemEntity)
+	if err != nil {
+		return nil, err
+	}
+
+	userIDArray := _utils.ExtractAuditUserID(itemEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	itemRes := _itemMapper.ToItemRes(ctx, itemEntity, userArr)
+	return itemRes, nil
+}
+
+func (s *itemServiceImpl) Delete(ctx context.Context, itemID uint) (*_itemModel.ItemWithLangRes, error) {
+
+	itemEntity, err := s.itemRepository.Delete(ctx, itemID)
+	if err != nil {
+		return nil, err
+	}
+
+	userIDArray := _utils.ExtractAuditUserID(itemEntity)
+	userArr, err := s.userRepository.FindByIDs(userIDArray)
+	if err != nil {
+		return nil, err
+	}
+
+	itemRes := _itemMapper.ToItemWithLangRes(ctx, itemEntity, userArr)
+	return itemRes, nil
+
 }

@@ -16,3 +16,8 @@ database:
 
 secretkey:
   jwtsecret: cVU(xdc%xnZ6B2#Euutn3+Lg7PY#rFv^g(f(VdGh!YNe&WzpRfmhxmY6#Cg%
+
+langs:
+  - "en" # default
+  - "th"
+  - "fr"

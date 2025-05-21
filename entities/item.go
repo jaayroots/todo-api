@@ -7,7 +7,7 @@ import (
 )
 
 type Item struct {
-	ID uint `gorm:"primaryKey"`
+	ID           uint               `gorm:"primaryKey"`
 	Translations []*ItemTranslation `gorm:"foreignKey:ItemID;constraint:OnDelete:CASCADE"`
 
 	CreatedAt time.Time      `gorm:"autoCreateTime"`
@@ -17,7 +17,6 @@ type Item struct {
 	CreatedBy uint  `gorm:"not null"`
 	UpdatedBy uint  `gorm:"not null"`
 	DeletedBy *uint `gorm:"column:deleted_by"`
-
 }
 
 func (t *Item) GetCreatedBy() uint {
@@ -34,7 +33,6 @@ func (t *Item) GetDeletedBy() uint {
 	}
 	return 0
 }
-
 
 func (t *Item) BeforeCreate(tx *gorm.DB) error {
 	if err := setBlameableFieldsBeforeCreate(tx, &t.CreatedBy, &t.UpdatedBy); err != nil {

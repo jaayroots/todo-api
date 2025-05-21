@@ -30,6 +30,30 @@ func ToItemItemTranslationEntity(itemReq *_itemModel.ItemReq, itemID uint) ([]*e
 	translations := make([]*entities.ItemTranslation, 0, len(itemReq.Title))
 
 	for lang, title := range itemReq.Title {
+		if _utils.IsValidLang(lang) {
+			description := ""
+			if itemReq.Description != nil {
+				if desc, ok := itemReq.Description[lang]; ok {
+					description = desc
+				}
+			}
+
+			translations = append(translations, &entities.ItemTranslation{
+				ItemID:      itemID,
+				Lang:        lang,
+				Title:       title,
+				Description: description,
+			})
+		}
+	}
+
+	return translations, nil
+}
+
+func ToItemItemTranslationEntityV2(itemReq *_itemModel.ItemReq, itemID uint) ([]*entities.ItemTranslation, error) {
+	translations := make([]*entities.ItemTranslation, 0, len(itemReq.Title))
+
+	for lang, title := range itemReq.Title {
 		description := ""
 		if itemReq.Description != nil {
 			if desc, ok := itemReq.Description[lang]; ok {
@@ -79,9 +103,9 @@ func ToItemRes(ctx context.Context, item *entities.Item, users []*entities.User)
 	}
 }
 
-func ToItemResV2(ctx context.Context, item *entities.Item, users []*entities.User) *_itemModel.ItemResV2 {
-	lang, _ := ctx.Value(pctxkeys.ContextKeyLang).(string)
+func ToItemWithLangRes(ctx context.Context, item *entities.Item, users []*entities.User) *_itemModel.ItemWithLangRes {
 
+	lang, _ := ctx.Value(pctxkeys.ContextKeyLang).(string)
 	userMap := _utils.MapperByID(users)
 	getFullNameByID := func(userID uint) *string {
 		if u, ok := userMap[userID]; ok {
@@ -100,7 +124,7 @@ func ToItemResV2(ctx context.Context, item *entities.Item, users []*entities.Use
 		}
 	}
 
-	return &_itemModel.ItemResV2{
+	return &_itemModel.ItemWithLangRes{
 		ID:          int(item.ID),
 		Title:       &title,
 		Description: &desc,

@@ -30,6 +30,7 @@ type (
 	Config struct {
 		Database *Database `mapstructure:"database" validate:"required"`
 		Server   *Server   `mapstructure:"server" validate:"required"`
+		Langs     []string  `mapstructure:"langs" validate:"required"`
 	}
 
 	SecretKey struct {

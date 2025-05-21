@@ -8,7 +8,6 @@ import (
 
 	_todoModel "github.com/jaayroots/todo-api/pkg/todo/model"
 	_todoService "github.com/jaayroots/todo-api/pkg/todo/service"
-	_userModel "github.com/jaayroots/todo-api/pkg/user/model"
 	_utils "github.com/jaayroots/todo-api/utils"
 )
 
@@ -25,12 +24,6 @@ func NewTodoControllerImpl(
 }
 
 func (c *todoContollerImpl) Get(pctx echo.Context) error {
-
-	val := pctx.Get("user")
-	_, ok := val.(*_userModel.UserRes)
-	if !ok {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
-	}
 
 	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
@@ -49,12 +42,6 @@ func (c *todoContollerImpl) Get(pctx echo.Context) error {
 
 func (c *todoContollerImpl) Create(pctx echo.Context) error {
 
-	val := pctx.Get("user")
-	_, ok := val.(*_userModel.UserRes)
-	if !ok {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
-	}
-
 	todoReq := new(_todoModel.TodoReq)
 	customerEchoRequest := custom.NewCustomEchoRequest(pctx)
 	if err := customerEchoRequest.Build(todoReq); err != nil {
@@ -72,12 +59,6 @@ func (c *todoContollerImpl) Create(pctx echo.Context) error {
 }
 
 func (c *todoContollerImpl) Update(pctx echo.Context) error {
-
-	val := pctx.Get("user")
-	_, ok := val.(*_userModel.UserRes)
-	if !ok {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
-	}
 
 	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
@@ -102,12 +83,6 @@ func (c *todoContollerImpl) Update(pctx echo.Context) error {
 
 func (c *todoContollerImpl) Delete(pctx echo.Context) error {
 
-	val := pctx.Get("user")
-	_, ok := val.(*_userModel.UserRes)
-	if !ok {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
-	}
-
 	todoID, err := _utils.StrToUint(pctx.Param("todoID"))
 	if err != nil {
 		return custom.Response(pctx, http.StatusBadRequest, nil, "Invalid todoID", nil)
@@ -124,12 +99,6 @@ func (c *todoContollerImpl) Delete(pctx echo.Context) error {
 }
 
 func (c *todoContollerImpl) FindAll(pctx echo.Context) error {
-
-	val := pctx.Get("user")
-	_, ok := val.(*_userModel.UserRes)
-	if !ok {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Invalid request")
-	}
 
 	TodoSearchReq := new(_todoModel.TodoSearchReq)
 	customerEchoRequest := custom.NewCustomEchoRequest(pctx)

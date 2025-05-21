@@ -22,6 +22,21 @@ type ItemTranslation struct {
 	DeletedBy *uint `gorm:"column:deleted_by"`
 }
 
+func (t *ItemTranslation) GetCreatedBy() uint {
+	return t.CreatedBy
+}
+
+func (t *ItemTranslation) GetUpdatedBy() uint {
+	return t.UpdatedBy
+}
+
+func (t *ItemTranslation) GetDeletedBy() uint {
+	if t.DeletedBy != nil {
+		return *t.DeletedBy
+	}
+	return 0
+}
+
 func (t *ItemTranslation) BeforeCreate(tx *gorm.DB) error {
 	if err := setBlameableFieldsBeforeCreate(tx, &t.CreatedBy, &t.UpdatedBy); err != nil {
 		return err
